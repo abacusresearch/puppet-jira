@@ -162,7 +162,10 @@ class jira::config {
 
   $dbconfig_template = $jira::use_jndi_ds ? {
     true    => "${module_name}/dbconfig.jndi.xml.epp",
-    default => "${module_name}/dbconfig.xml.epp"
+    default => $jira::dbconftempl ? {
+      undef => "${module_name}/dbconfig.xml.epp",
+      default => "${module_name}/dbconfig.xml.${jira::dbconftempl}.epp",
+    }
   }
   file { "${jira::homedir}/dbconfig.xml":
     content => epp($dbconfig_template),

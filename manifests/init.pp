@@ -82,6 +82,13 @@
 #   The database schema, if applicable. Defaults to 'public' with PostgreSQL
 # @param dburl
 #   Set this if you wish to use a custom database URL
+# @param dbconftempl
+#   If not set, the default dbconfig.xml.epp template file will be used. Jira
+#   10.3 has different order of XML config tags and every run the puppet
+#   updates the dbconfig.xml with the XML tags order from the default
+#   dbconfig.xml template file and restarts the Jira. For different
+#   dbconfig.xml XML tags order there can be other template file named
+#   dbconfig.xml.${dbconftempl}.epp and can be used by setting this variable.
 # @param connection_settings
 #   Configures additional JDBC connection properties in dbconfig.xml
 #   For PostgreSQL, a default value of "tcpKeepAlive=true;socketTimeout=240" will be used
@@ -314,6 +321,7 @@ class jira (
   String $dbpassword                                                = 'mypassword',
   String $dbserver                                                  = 'localhost',
   String $dbname                                                    = 'jira',
+  Optional[String] $dbconftempl                                     = undef,
   Optional[Variant[Integer,String]] $dbport                         = undef,
   Optional[String] $dbdriver                                        = undef,
   Optional[String] $dbtype                                          = undef,
